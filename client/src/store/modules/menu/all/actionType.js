@@ -1,0 +1,1 @@
+export const SET_ALLMENU = "SET_ALLMENU";

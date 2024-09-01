@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getContact } from "../store/modules/contact/reducer";
-import { setContact } from "../store/modules/contact/action";
 import NavAdmin from "./NavAdmin";
 import { FiTrash2 } from "react-icons/fi";
+import { DeleteRequest } from "../plugins/https";
 
 const AdminContact = () => {
   const dispatch = useDispatch();
@@ -15,8 +15,8 @@ const AdminContact = () => {
 
   const handleDelete = async (id) => {
     try {
-      const updatedContacts = contacts.filter((contact) => contact.id !== id);
-      dispatch(setContact(updatedContacts));
+      await DeleteRequest(`/contact/${id}`);
+      getContact(dispatch);
 
       console.log("Deleted contact with id:", id);
     } catch (error) {
@@ -26,7 +26,6 @@ const AdminContact = () => {
 
   return (
     <div>
-      {" "}
       <NavAdmin />
       <div className='min-h-screen bg-white flex flex-col items-center py-10'>
         <div className='w-full max-w-4xl bg-gray-100 p-6 rounded-lg shadow-md'>
@@ -41,7 +40,7 @@ const AdminContact = () => {
             <ul className='space-y-4'>
               {contacts.map((contact) => (
                 <li
-                  key={contact.id}
+                  key={contact._id}
                   className='bg-white p-4 rounded-lg shadow flex justify-between items-center'>
                   <div>
                     <p className='font-semibold text-lg'>{contact.name}</p>
@@ -50,7 +49,7 @@ const AdminContact = () => {
                     <p className='text-gray-800 mt-2'>{contact.message}</p>
                   </div>
                   <button
-                    onClick={() => handleDelete(contact.id)}
+                    onClick={() => handleDelete(contact._id)}
                     className='text-red-600 hover:text-red-800'
                     aria-label='Delete Contact'>
                     <FiTrash2 size={24} />

@@ -30,9 +30,10 @@ const MenuFirst = () => {
       setAnimation("animate-slideInRight");
     }, 500);
   };
-  const foodItems = useSelector((state) => state.menuAllReducer.all) || [];
 
   const dispatch = useDispatch();
+
+  const foodItems = useSelector((state) => state.menuAllReducer.all) || [];
 
   useEffect(() => {
     getMenu(dispatch);

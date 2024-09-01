@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import NavAdmin from "./NavAdmin";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../store/modules/menu/all/reducer";
 import { setEdit } from "../store/modules/menu/edit/action";
-import axios from "axios";
+import { DeleteRequest } from "../plugins/https";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminAll = () => {
   const dispatch = useDispatch();
@@ -37,14 +39,22 @@ const AdminAll = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    console.log("Deleting item  id is : ", id);
-    const deletItem = foodItems.filter((item) => item._id === id);
-    dispatch(deletItem(axios(`menu/_id`)));
+  const handleDelete = async (id) => {
+    try {
+      await DeleteRequest(`/menu/${id}`);
+      toast.success("Item deleted successfully!");
+      getMenu(dispatch);
+    } catch (error) {
+      toast.error("Failed to delete item. Please try again.");
+      console.error("Error deleting item:", error);
+    }
   };
+
   return (
     <div>
       <NavAdmin />
+      <ToastContainer />
+      
       <div className='p-4 sm:p-6 min-h-screen bg-gray-100'>
         <header className='mb-8 text-center '>
           <h1 className='text-3xl sm:text-4xl font-extrabold text-red-600'>
@@ -77,7 +87,7 @@ const AdminAll = () => {
                 </thead>
                 <tbody>
                   {groupedItems[category].map((item) => (
-                    <tr key={item.id} className='hover:bg-gray-50'>
+                    <tr key={item._id} className='hover:bg-gray-50'>
                       <td className='border p-3'>{item.title}</td>
                       <td className='border p-3'>Rs. {item.price}</td>
                       <td className='border p-3'>

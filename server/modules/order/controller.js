@@ -1,48 +1,79 @@
-// controllers/orderController.js
-const Order = require('../models/Order');
+const Schema = require("./schema");
 
-// Create a new order
-exports.createOrder = async(req, res) => {
+const getAll = async(req, res) => {
     try {
-        const { items, totalAmount } = req.body;
-        const order = await Order.create({
-            user: req.user._id,
-            items,
-            totalAmount,
+        const data = await Schema.find().populate("category");
+        res.send({
+            status: 200,
+            message: "Items retrived sucessfully",
+            data: data,
         });
-        res.status(201).json(order);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send("Error in retriving data");
     }
 };
 
-// Get all orders for admin or user's own orders
-exports.getOrders = async(req, res) => {
+const getById = async(req, res) => {
     try {
-        const orders = await Order.find(req.user.role === 'admin' ? {} : { user: req.user._id }).populate('items.foodItem');
-        res.status(200).json(orders);
+        console.log(req.params);
+        const data = await Schema.findById(req.params.id).populate("category");
+        res.send({
+            status: 200,
+            message: "Items Id data retrived sucessfully",
+            data: data,
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send("Error in retriving data");
     }
 };
 
-// Update order status
-exports.updateOrderStatus = async(req, res) => {
+const create = async(req, res) => {
     try {
-        const { status } = req.body;
-        const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
-        res.status(200).json(order);
+        const data = await Schema.create({
+            ...req.body,
+        });
+        res.send({
+            status: 200,
+            message: "Items created sucessfully",
+            data: data,
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send("Error in creating items");
     }
 };
 
-// Delete an order
-exports.deleteOrder = async(req, res) => {
+const remove = async(req, res) => {
     try {
-        await Order.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: 'Order deleted successfully' });
+        console.log(req.params);
+        const data = await Schema.findByIdAndDelete(req.params.id);
+        res.send({
+            status: 200,
+            message: "Items deleted sucessfully",
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send("Error in deleting the data");
     }
+};
+
+const edit = async(req, res) => {
+    try {
+        const data = await Schema.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.send({
+            status: 200,
+            message: "Items updated sucessfully",
+            data: data,
+        });
+    } catch (error) {
+        res.status(500).send("Error in updating data");
+    }
+};
+
+module.exports = {
+    getAll,
+    getById,
+    create,
+    remove,
+    edit,
 };

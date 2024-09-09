@@ -1,1 +1,1 @@
-export const SET_CONTACT = "SET_CONTACT";
+export const SET_ORDER = "SET_ORDER";

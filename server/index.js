@@ -13,6 +13,8 @@ const favouriteRouter = require("./modules/favourite/router");
 const menuRouter = require("./modules/menu/router");
 const userRouter = require("./modules/user/router");
 const adminRouter = require("./modules/admin/router");
+const orderRouter = require("./modules/order/router");
+
 
 
 //   Implementing the router in port
@@ -23,6 +25,8 @@ app.use("/category", categoryRouter);
 app.use("/contact", contactRouter);
 app.use("/menu", menuRouter);
 app.use("/auth", authRouter);
+app.use("/orders", orderRouter);
+
 
 app.get("/", (req, res) => {
     res.send("Backend is Running");

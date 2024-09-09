@@ -1,13 +1,13 @@
-// routes/orderRoutes.js
-const express = require('express');
-const { createOrder, getOrders, updateOrderStatus, deleteOrder } = require('../controllers/orderController');
-const { verifyUser } = require('../middleware/verifyUser');
-
+const express = require("express");
+const controller = require("./controller");
 const router = express.Router();
 
-router.post('/orders', verifyUser, createOrder);
-router.get('/orders', verifyUser, getOrders);
-router.put('/orders/:id', verifyUser, updateOrderStatus);
-router.delete('/orders/:id', verifyUser, deleteOrder);
+const { verifyUser } = require("../auth/auth.Middleware");
+
+router.get("", verifyUser, controller.getAll);
+router.get("/:id", verifyUser, controller.getById);
+router.post("", verifyUser, controller.create);
+router.delete("/:id", verifyUser, controller.remove);
+router.put("/:id", verifyUser, controller.edit);
 
 module.exports = router;

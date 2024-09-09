@@ -1,41 +1,42 @@
 const Schema = require("./schema");
-const Favorite = require("./schema");
 
 const getAll = async(req, res) => {
     try {
-        const data = await Favorite.find({ user: req.user._id }).populate(
-            "foodItem"
-        );
+        const data = await Schema.find({ user: req.user._id }).populate({
+            path: 'foodItem',
+            select: 'image title description category person price'
+        }); // finding the user and displaying the data under the current users
         res.send({
             status: 200,
-            message: "Items retrived sucessfully",
+            message: "Favourites retrived sucessfully",
             data: data,
         });
     } catch (error) {
-        res.status(500).send("Error in retriving data");
+        res.status(500).send("Error in retriving Favourites");
     }
 };
 
 const create = async(req, res) => {
     try {
-        const { foodItem } = req.body;
-        const data = new Favorite({ user: req.user._id, foodItem });
-        await data.save();
+        const favouriteData = {
+            foodItem: req.body.foodItem,
+            user: req.user._id,
+        }
+        const data = await Schema.create(favouriteData);
         res.send({
             status: 200,
-            message: "Added to favorites successfully",
+            message: "Added to Favourite sucessfully",
             data: data,
         });
     } catch (error) {
-        console.error("Error adding favorite:", error);
-        res.status(500).send("Error adding favorite");
+        res.status(500).send("Error in Adding to Favourite");
     }
 };
 
 const remove = async(req, res) => {
     try {
         const { id } = req.params;
-        await Favorite.findOneAndDelete({ _id: id, user: req.user._id });
+        await Schema.findOneAndDelete({ _id: id, user: req.user._id });
         res.send({
             status: 200,
             message: "Favorite removed successfully",

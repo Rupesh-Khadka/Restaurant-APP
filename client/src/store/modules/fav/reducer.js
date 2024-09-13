@@ -1,7 +1,7 @@
 // src/redux/favoriteReducer.js
 import { addFav, deleteFav, setFav } from "./action";
-import { SET_FAV, ADD_FAV, DELETE_FAV } from "./actionType";
 import { DeleteRequest, GetRequest, PostRequest } from "../../../plugins/https";
+import { ADD_FAV, DELETE_FAV, SET_FAV } from "./actionType";
 
 export const getFavorites = () => async(dispatch) => {
     try {
@@ -12,9 +12,9 @@ export const getFavorites = () => async(dispatch) => {
     }
 };
 
-export const createFavorite = async(dispatch, item) => {
+export const createFavorite = async(dispatch, id) => {
     try {
-        const res = await PostRequest("/favourite", { foodItem: item });
+        const res = await PostRequest("/favourite", { foodItem: foodItemId, user: userId }); // "foodItem" = "id" user = userId in backend
         dispatch(addFav(res.data));
     } catch (error) {
         console.error("Error adding favorite:", error);

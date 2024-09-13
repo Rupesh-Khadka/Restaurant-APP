@@ -5,8 +5,8 @@ import { DeleteRequest, GetRequest, PostRequest } from "../../../plugins/https";
 
 export const getFavorites = () => async(dispatch) => {
     try {
-        const res = await GetRequest("/favorite");
-        dispatch(setFav(res.data));
+        const res = await GetRequest("/favourite");
+        dispatch(setFav(res.data)); // Update items with fetched favorites
     } catch (error) {
         console.error("Error fetching favorites:", error);
     }
@@ -14,7 +14,7 @@ export const getFavorites = () => async(dispatch) => {
 
 export const createFavorite = async(dispatch, item) => {
     try {
-        const res = await PostRequest("/favorites", item);
+        const res = await PostRequest("/favourite", { foodItem: item });
         dispatch(addFav(res.data));
     } catch (error) {
         console.error("Error adding favorite:", error);
@@ -23,7 +23,7 @@ export const createFavorite = async(dispatch, item) => {
 
 export const removeFavorite = async(dispatch, id) => {
     try {
-        await DeleteRequest(`/favorite/${id}`);
+        await DeleteRequest(`/favourite/${id}`);
         dispatch(deleteFav(id));
     } catch (error) {
         console.error("Error removing favorite:", error);
@@ -44,7 +44,7 @@ export const favReducer = (state = initialState, action) => {
         case DELETE_FAV:
             return {
                 ...state,
-                items: state.favorites.filter((item) => item.id !== action.payload),
+                items: state.items.filter((item) => item.id !== action.payload),
             };
         case SET_FAV:
             return {

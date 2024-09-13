@@ -1,16 +1,25 @@
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
-import { addFav } from "../../../store/modules/fav/action";
-import { useDispatch } from "react-redux";
-import { PostRequest } from "../../../plugins/https";
+import { useDispatch, useSelector } from "react-redux";
+import { createFavorite } from "../../../store/modules/fav/reducer";
 
-function FoodCard({ image, title, description, person, price }) {
+function FoodCard({ _id, image, title, description, person, price }) {
   const dispatch = useDispatch();
+  const reduxToken = useSelector((state) => state.authReducer.token);
 
   const handleInput = async () => {
-    const item = { image, title, description, person, price };
-    const res = await PostRequest('/favourite', item);
-    dispatch(addFav(res.data));
+    if (reduxToken) {
+      const favItems = {
+        foodItem: _id,
+      };
+      try {
+        dispatch(createFavorite(favItems));
+      } catch (error) {
+        console.log("Error in adding to fav items", error);
+      }
+    } else {
+      alert("Please Log in ");
+    }
   };
 
   return (
@@ -46,11 +55,15 @@ function FoodCard({ image, title, description, person, price }) {
             <button className='bg-red-600 onclick={} hover:bg-red-700 text-white font-bold py-1 px-3 md:py-2 md:px-4 rounded-full transition-transform transform hover:scale-105'>
               +
             </button>
-            <button
-              onClick={handleInput}
-              className='text-red-600 text-2xl md:text-3xl hover:text-red-500 transition-transform transform hover:scale-105 ml-2'>
-              <AiOutlineHeart />
-            </button>
+            {reduxToken ? (
+              <button
+                onClick={handleInput}
+                className='text-red-600 text-2xl md:text-3xl hover:text-red-500 transition-transform transform hover:scale-105 ml-2'>
+                <AiOutlineHeart />
+              </button>
+            ) : (
+              <div> </div>
+            )}
           </div>
         </div>
       </div>

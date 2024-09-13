@@ -12,9 +12,12 @@ export const getFavorites = () => async(dispatch) => {
     }
 };
 
-export const createFavorite = async(dispatch, id) => {
+export const createFavorite = (foodItemId, userId) => async(dispatch) => {
     try {
-        const res = await PostRequest("/favourite", { foodItem: foodItemId, user: userId }); // "foodItem" = "id" user = userId in backend
+        const res = await PostRequest("/favourite", {
+            foodItem: foodItemId,
+            user: userId,
+        }); // "foodItem" = "id" user = userId in backend
         dispatch(addFav(res.data));
     } catch (error) {
         console.error("Error adding favorite:", error);

@@ -3,15 +3,15 @@ const Schema = mongoose.Schema;
 
 const menuSchema = new Schema({
     image: {
-        type: "String",
+        type: String,
         default: "",
     },
     title: {
-        type: "String",
+        type: String,
         required: true,
     },
     description: {
-        type: "String",
+        type: String,
         required: true,
     },
 
@@ -21,11 +21,11 @@ const menuSchema = new Schema({
         ref: "Category",
     },
     person: {
-        type: "Number",
+        type: Number,
         required: true,
     },
     price: {
-        type: "Number",
+        type: Number,
         required: true,
     },
 });

@@ -2,10 +2,13 @@ const Schema = require("./schema");
 
 const getAll = async(req, res) => {
     try {
-        const data = await Schema.find().populate("category");
+        const data = await Schema.find().populate({
+            path: "items.item",
+            select: "totalamount address email number status createdAT",
+        });
         res.send({
             status: 200,
-            message: "Items retrived sucessfully",
+            message: "Order retrived sucessfully",
             data: data,
         });
     } catch (error) {
@@ -16,7 +19,9 @@ const getAll = async(req, res) => {
 const getById = async(req, res) => {
     try {
         console.log(req.params);
-        const data = await Schema.findById(req.params.id).populate("category");
+        const data = await Schema.findById(req.params.id).populate(
+            "items.menuItem"
+        );
         res.send({
             status: 200,
             message: "Items Id data retrived sucessfully",
@@ -32,13 +37,15 @@ const create = async(req, res) => {
         const data = await Schema.create({
             ...req.body,
         });
-        res.send({
-            status: 200,
-            message: "Items created sucessfully",
+        res.status(201).send({
+            status: 201,
+            message: "Order created successfully",
             data: data,
         });
     } catch (error) {
-        res.status(500).send("Error in creating items");
+        res
+            .status(500)
+            .send({ message: "Error creating order", error: error.message });
     }
 };
 

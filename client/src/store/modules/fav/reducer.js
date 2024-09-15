@@ -6,21 +6,21 @@ import { ADD_FAV, DELETE_FAV, SET_FAV } from "./actionType";
 export const getFavorites = () => async(dispatch) => {
     try {
         const res = await GetRequest("/favourite");
+        console.log("res");
         dispatch(setFav(res.data)); // Update items with fetched favorites
     } catch (error) {
-        console.error("Error fetching favorites:", error);
+        console.error("Error fetching favorites");
     }
 };
 
-export const createFavorite = (foodItemId, userId) => async(dispatch) => {
+export const createFavorite = (foodItemId) => async(dispatch) => {
     try {
         const res = await PostRequest("/favourite", {
             foodItem: foodItemId,
-            user: userId,
-        }); // "foodItem" = "id" user = userId in backend
-        dispatch(addFav(res.data));
+        }); // "foodItem" = "id"  in backend
+        dispatch(addFav(res.data.data));
     } catch (error) {
-        console.error("Error adding favorite:", error);
+        console.error("Error adding favorite");
     }
 };
 

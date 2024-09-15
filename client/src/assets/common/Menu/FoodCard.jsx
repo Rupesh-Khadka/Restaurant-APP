@@ -2,7 +2,7 @@ import React from "react";
 import { jwtDecode } from "jwt-decode";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-// import { createFavorite } from "../../../store/modules/fav/reducer";
+import { createFavorite } from "../../../store/modules/fav/reducer";
 
 function FoodCard({ _id, image, title, description, person, price }) {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function FoodCard({ _id, image, title, description, person, price }) {
       try {
         console.log("User id :", userId);
         console.log("Item to be added in favourite id :", _id);
-        dispatch(createFavorite(userId, _id));
+        dispatch(createFavorite(_id));
       } catch (error) {
         console.log("Error in adding to fav items");
       }
@@ -58,7 +58,7 @@ function FoodCard({ _id, image, title, description, person, price }) {
             </button>
             {reduxToken ? (
               <button
-                onClick={() => handleInput(_id)}
+                onClick={handleInput}
                 className='text-red-600 text-2xl md:text-3xl hover:text-red-500 transition-transform transform hover:scale-105 ml-2'>
                 <AiOutlineHeart />
               </button>

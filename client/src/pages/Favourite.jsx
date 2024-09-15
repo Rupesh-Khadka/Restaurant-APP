@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../store/modules/fav/reducer";
 import { AiOutlineHeart } from "react-icons/ai";
 
-const Favourite = ({ _id, image, title, description, person, price }) => {
+const Favourite = () => {
   const dispatch = useDispatch();
   const foodItems = useSelector((state) => state.favReducer.items);
+  console.log("The food  items are:",foodItems)
 
   useEffect(() => {
-    dispatch(getFavorites());
+    getFavorites(dispatch);
   }, [dispatch]);
 
   const handleRemoveFavorite = (id) => {

@@ -3,7 +3,7 @@ import { addFav, deleteFav, setFav } from "./action";
 import { DeleteRequest, GetRequest, PostRequest } from "../../../plugins/https";
 import { ADD_FAV, DELETE_FAV, SET_FAV } from "./actionType";
 
-export const getFavorites = () => async(dispatch) => {
+export const getFavorites = async(dispatch) => {
     try {
         const res = await GetRequest("/favourite");
         console.log("res");
@@ -13,10 +13,10 @@ export const getFavorites = () => async(dispatch) => {
     }
 };
 
-export const createFavorite = (foodItemId) => async(dispatch) => {
+export const createFavorite = async(dispatch, foodItem) => {
     try {
         const res = await PostRequest("/favourite", {
-            foodItem: foodItemId,
+            foodItem,
         }); // "foodItem" = "id"  in backend
         dispatch(addFav(res.data.data));
     } catch (error) {

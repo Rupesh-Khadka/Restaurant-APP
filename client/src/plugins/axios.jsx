@@ -7,7 +7,7 @@ baseAxios.defaults.baseURL = "http://localhost:3002";
 // Add a request interceptor
 baseAxios.interceptors.request.use(
   function (config) {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("frontendToken");
     if (token) {
       config.headers.Authorization = "bearer " + token;
     }

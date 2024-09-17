@@ -3,7 +3,7 @@ const Schema = require("../user/schema");
 
 const verifyUser = async(req, res, next) => {
     const bearerToken = req.header("Authorization");
-    const token = bearerToken.split(" ")[1];
+    const token = bearerToken ? bearerToken.split(" ")[1] : undefined;
 
     if (token) {
         try {

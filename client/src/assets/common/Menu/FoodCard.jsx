@@ -1,5 +1,5 @@
 import React from "react";
-import { jwtDecode } from "jwt-decode";
+import  {jwtDecode} from "jwt-decode"; 
 import { AiOutlineHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { createFavorite } from "../../../store/modules/fav/reducer";
@@ -9,12 +9,12 @@ function FoodCard({ _id, image, title, description, person, price }) {
   const reduxToken = useSelector((state) => state.authReducer.token);
   const userId = reduxToken ? jwtDecode(reduxToken).id : null;
 
-  const handleInput = async () => {
+  const addToFavorite = async () => {
     if (reduxToken && userId) {
       try {
         console.log("User id :", userId);
         console.log("Item to be added in favourite id :", _id);
-        dispatch(createFavorite(_id));
+        await createFavorite(dispatch, _id);
       } catch (error) {
         console.log("Error in adding to fav items");
       }
@@ -56,14 +56,12 @@ function FoodCard({ _id, image, title, description, person, price }) {
             <button className='bg-red-600 onclick={} hover:bg-red-700 text-white font-bold py-1 px-3 md:py-2 md:px-4 rounded-full transition-transform transform hover:scale-105'>
               +
             </button>
-            {reduxToken ? (
+            {reduxToken && (
               <button
-                onClick={handleInput}
+                onClick={addToFavorite}
                 className='text-red-600 text-2xl md:text-3xl hover:text-red-500 transition-transform transform hover:scale-105 ml-2'>
                 <AiOutlineHeart />
               </button>
-            ) : (
-              <div> </div>
             )}
           </div>
         </div>

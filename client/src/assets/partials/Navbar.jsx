@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { HeaderMegaMenu } from "./Navbar/HeaderMegaMenu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../store/modules/auth/login/action";
 
 const Navbar = () => {
   const token = useSelector((state) => state.authReducer.token);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // @TODO: Decode JWT token & check token expiry to actually logout
     if (!token) {
       localStorage.removeItem("frontendToken");
-      setToken(undefined);
+      dispatch(setToken(undefined));
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   return <HeaderMegaMenu />;
 };

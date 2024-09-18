@@ -8,7 +8,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { frontendRoutes, adminRoutes } from "./route/routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setToken } from "./store/modules/auth/login/action";
 
 function App() {

@@ -1,20 +1,29 @@
-// src/MenuFirst.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFavorites } from "../store/modules/fav/reducer";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
+import { getFavorites, removeFavorite } from "../store/modules/fav/reducer";
+import { toast } from "react-toastify";
+import { DeleteRequest } from "../plugins/https";
 
 const Favourite = () => {
   const dispatch = useDispatch();
-  const foodItems = useSelector((state) => state.favReducer.items);
-  console.log("The food  items are:",foodItems)
+  const favItem = useSelector((state) => state.favReducer.items) || [];
+  console.log("The Fav items are:", favItem);
 
   useEffect(() => {
     getFavorites(dispatch);
   }, [dispatch]);
 
-  const handleRemoveFavorite = (id) => {
-    // dispatch(removeFavorite(id));
+  const handleDelete = async (id) => {
+    console.log("Deleted fav with id:", id);
+
+    try {
+      await DeleteRequest(`/favourite/${id}`);
+      getFavorites(dispatch);
+      toast.success("Favourite item deleted sucessfully");
+    } catch (error) {
+      console.error("Error deleting favourite items:", error);
+    }
   };
 
   return (
@@ -23,18 +32,18 @@ const Favourite = () => {
         Your Favorites
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-center items-center bg-gray-100 p-4 rounded-lg'>
-        {foodItems.length > 0 ? (
-          foodItems.map((item) => (
-            <div key={item._id} className='p-4'>
+        {favItem.length > 0 ? (
+          favItem.map((items) => (
+            <div key={items._id} className='p-4'>
               <div className='bg-white rounded-lg shadow-lg p-4 md:p-5 flex flex-col justify-between w-full max-w-xs mx-auto transition-transform transform hover:scale-105 hover:shadow-xl'>
                 <div className='flex flex-col items-center'>
                   <img
-                    src={item.image}
-                    alt={`Image of ${title}`}
+                    src={items.foodItem.image}
+                    alt={`Image of ${items.foodItem.title}`}
                     className='w-36 h-32 md:w-46 md:h-40 rounded-lg object-cover transition-transform transform hover:scale-110'
                   />
                   <h3 className='text-xl md:text-2xl font-semibold mt-2 md:mt-3 text-red-800 text-center'>
-                    {item.title}
+                    {items.foodItem.title}
                   </h3>
                 </div>
                 <div className='flex flex-col gap-2 mt-3 md:mt-4'>
@@ -43,7 +52,7 @@ const Favourite = () => {
                       Description:
                     </p>
                     <p className='text-sm md:text-base text-gray-700'>
-                      {item.description}
+                      {items.foodItem.description}
                     </p>
                   </div>
                   <div className='flex gap-2 md:gap-4 items-center'>
@@ -51,12 +60,12 @@ const Favourite = () => {
                       Person:
                     </p>
                     <p className='text-sm md:text-base text-gray-700'>
-                      {item.person}
+                      {items.foodItem.person}
                     </p>
                   </div>
                   <div className='flex justify-between items-center mt-3 md:mt-4'>
                     <p className='text-lg md:text-xl font-bold text-red-800'>
-                      Rs. {item.price}
+                      Rs. {items.foodItem.price}
                     </p>
                     <div className='flex items-center'>
                       <button className='bg-red-600 onclick={} hover:bg-red-700 text-white font-bold py-1 px-3 md:py-2 md:px-4 rounded-full transition-transform transform hover:scale-105'>
@@ -64,9 +73,9 @@ const Favourite = () => {
                       </button>
 
                       <button
-                       
-                        className='text-red-600 text-2xl md:text-3xl hover:text-red-500 transition-transform transform hover:scale-105 ml-2'>
-                        <AiOutlineHeart />
+                        onClick={() => handleDelete(items._id)}
+                        className='text-red-600  text-4xl md:text-3xl hover:text-red-500 transition-transform transform hover:scale-105 ml-2'>
+                        <AiFillHeart />
                       </button>
                     </div>
                   </div>

@@ -6,7 +6,6 @@ import { ADD_FAV, DELETE_FAV, SET_FAV } from "./actionType";
 export const getFavorites = async(dispatch) => {
     try {
         const res = await GetRequest("/favourite");
-        console.log("res");
         dispatch(setFav(res.data)); // Update items with fetched favorites
     } catch (error) {
         console.error("Error fetching favorites");

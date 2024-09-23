@@ -5,7 +5,6 @@ import { SET_ALLMENU } from "./actionType";
 export const getMenu = async(dispatch) => {
     try {
         const res = await GetRequest("/menu");
-        console.log(res);
         dispatch(setAllmenu(res.data));
     } catch (error) {
         console.error("Error getting menu:", error);

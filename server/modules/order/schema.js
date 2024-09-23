@@ -13,28 +13,36 @@ const orderSchema = new Schema({
             required: true,
             default: 1,
         },
+        total: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
     }, ],
-    totalamount: {
+    totalAmount: {
         type: Number,
         required: true,
         default: 0,
     },
-    name: {
-        type: String,
-        required: true,
-    },
-    address: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    number: {
-        type: Number,
-        required: true,
-    },
+    customer: [{
+        name: {
+            type: String,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        number: {
+            type: Number,
+            required: true,
+        },
+    }, ],
+
     status: {
         type: String,
         enum: ["Pending", "Ongoing", "Delivered"],

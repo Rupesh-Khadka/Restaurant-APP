@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiFillHeart } from "react-icons/ai";
-import { getFavorites, removeFavorite } from "../store/modules/fav/reducer";
+import { getFavorites } from "../store/modules/fav/reducer";
 import { toast } from "react-toastify";
 import { DeleteRequest } from "../plugins/https";
 
 const Favourite = () => {
   const dispatch = useDispatch();
-  const favItem = useSelector((state) => state.favReducer.items) || [];
-  console.log("The Fav items are:", favItem);
+  const favItems = useSelector((state) => state.favReducer.items) || [];
 
   useEffect(() => {
     getFavorites(dispatch);
@@ -32,8 +31,8 @@ const Favourite = () => {
         Your Favorites
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-center items-center bg-gray-100 p-4 rounded-lg'>
-        {favItem.length > 0 ? (
-          favItem.map((items) => (
+        {favItems.length > 0 ? (
+          favItems.map((items) => (
             <div key={items._id} className='p-4'>
               <div className='bg-white rounded-lg shadow-lg p-4 md:p-5 flex flex-col justify-between w-full max-w-xs mx-auto transition-transform transform hover:scale-105 hover:shadow-xl'>
                 <div className='flex flex-col items-center'>

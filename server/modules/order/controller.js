@@ -1,18 +1,19 @@
 const Schema = require("./schema");
+const Menu = require("../menu/schema");
 
 const getAll = async(req, res) => {
     try {
-        const data = await Schema.find().populate({
+        const data = await Order.find().populate({
             path: "items.item",
-            select: "totalamount address email number status createdAT",
+            select: "totalamount address email number status createdAt", // Ensure 'createdAt' is spelled correctly
         });
         res.send({
             status: 200,
-            message: "Order retrived sucessfully",
+            message: "Order retrieved successfully",
             data: data,
         });
     } catch (error) {
-        res.status(500).send("Error in retriving data");
+        res.status(500).send("Error in retrieving data");
     }
 };
 
@@ -34,18 +35,39 @@ const getById = async(req, res) => {
 
 const create = async(req, res) => {
     try {
-        const data = await Schema.create({
-            ...req.body,
+        const { items, customer, status, createdAt } = req.body; // req data from items
+        const calculateTotal = await Promise.all(
+            items.map(async(item) => {
+                ///items from Schema
+                const menuItem = await Menu.findById(item.item); // item from the schema
+                if (menuItem) {
+                    const total = menuItem.price * item.quantity; // calculate the total for Item
+                    return {
+                        //  Passing the item quantity and total to item from schema
+                        item: item.item,
+                        quantity: item.quantity,
+                        total,
+                    };
+                }
+                throw new Error("Menu item not found"); // If no menu item is found
+            })
+        );
+        const totalAmount = calculateTotal.reduce(
+            (sum, item) => sum + item.total,
+            0
+        ); // taking item and sum to add and item.total to access total else 0
+        const newOrder = new Schema({ //Iniciate new order
+            items: calculateTotal,
+            totalAmount,
+            customer,
+            status,
+            createdAt,
         });
-        res.status(201).send({
-            status: 201,
-            message: "Order created successfully",
-            data: data,
-        });
+
+        await newOrder.save();
+        res.status(201).json(newOrder);
     } catch (error) {
-        res
-            .status(500)
-            .send({ message: "Error creating order", error: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 

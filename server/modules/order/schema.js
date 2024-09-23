@@ -8,6 +8,10 @@ const orderSchema = new Schema({
             ref: "Menu",
             required: true,
         },
+        title: {
+            type: String,
+            required: true,
+        },
         quantity: {
             type: Number,
             required: true,

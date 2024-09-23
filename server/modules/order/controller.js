@@ -44,7 +44,8 @@ const create = async(req, res) => {
                     const total = menuItem.price * item.quantity; // calculate the total for Item
                     return {
                         //  Passing the item quantity and total to item from schema
-                        item: item.item,
+                        item: item.item, //Item Id
+                        title: menuItem.title,
                         quantity: item.quantity,
                         total,
                     };

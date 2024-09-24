@@ -23,35 +23,25 @@ const orderSchema = new Schema({
             default: 0,
         },
     }, ],
+
     totalAmount: {
         type: Number,
         required: true,
         default: 0,
     },
-    customer: [{
-        name: {
-            type: String,
-            required: true,
-        },
-        address: {
-            type: String,
-            required: true,
-        },
-        email: {
-            type: String,
-            required: true,
-        },
-        number: {
-            type: Number,
-            required: true,
-        },
-    }, ],
+
+    customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CustomerDetails",
+        required: true,
+    },
 
     status: {
         type: String,
         enum: ["Pending", "Ongoing", "Delivered"],
         default: "Pending",
     },
+
     createdAt: {
         type: Date,
         default: Date.now,

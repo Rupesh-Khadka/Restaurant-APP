@@ -1,17 +1,17 @@
 const Schema = require("./schema");
-const CustomerDetails = require("./schemaCustomer");
 const Menu = require("../menu/schema");
+const { userInfo } = require("os");
 
 const getAll = async(req, res) => {
     try {
         const data = await Schema.find()
             .populate({
                 path: "items.item",
-                select: "price",
+                select: "title price",
             })
             .populate({
                 path: "customer",
-                select: "name address email number",
+                select: "userName email  ",
             });
         res.send({
             status: 200,
@@ -51,35 +51,8 @@ const getById = async(req, res) => {
 
 const create = async(req, res) => {
     try {
-        const { items, customer, status, createdAt } = req.body; // req data from items
-        if (!customer ||
-            !customer.name ||
-            !customer.address ||
-            !customer.email ||
-            !customer.number
-        ) {
-            return res
-                .status(400)
-                .json({ message: "Missing required customer fields." });
-        }
+        const { items, customer, address, status, createdAt } = req.body; // req data from items
 
-        console.log("Customer email:", customer.email);
-        console.log("Customer number:", customer.number);
-
-        let checkCustomer = await CustomerDetails.findOne({
-            // check if the customer email and number exixt or not
-            $or: [{ number: customer.number }, { email: customer.email }], // $or:[] helps to check multiple condotion in mongodb
-        });
-        if (!checkCustomer) {
-            //If the id is not present
-            checkCustomer = new CustomerDetails(customer);
-            try {
-                await CustomerDetails.save();
-            } catch (error) {
-                console.error("Error saving customer:", error);
-                return res.status(500).json({ message: "Error creating customer" });
-            }
-        }
         const calculateTotal = await Promise.all(
             items.map(async(item) => {
                 ///items from Schema
@@ -89,7 +62,6 @@ const create = async(req, res) => {
                     return {
                         //  Passing the item quantity and total to item from schema
                         item: item.item, //Item Id
-                        title: menuItem.title,
                         quantity: item.quantity,
                         total,
                     };
@@ -105,7 +77,8 @@ const create = async(req, res) => {
             //Iniciate new order
             items: calculateTotal,
             totalAmount,
-            customer: checkCustomer._id, //Use customer id
+            customer: req.user._id, //Use customer id
+            address,
             status,
             createdAt,
         });

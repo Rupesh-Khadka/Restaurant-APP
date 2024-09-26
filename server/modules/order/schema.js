@@ -8,10 +8,7 @@ const orderSchema = new Schema({
             ref: "Menu",
             required: true,
         },
-        title: {
-            type: String,
-            required: true,
-        },
+
         quantity: {
             type: Number,
             required: true,
@@ -29,13 +26,15 @@ const orderSchema = new Schema({
         required: true,
         default: 0,
     },
-
     customer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "CustomerDetails",
+        ref: "User",
         required: true,
     },
-
+    address: {
+        type: String,
+        required: true,
+    },
     status: {
         type: String,
         enum: ["Pending", "Ongoing", "Delivered"],

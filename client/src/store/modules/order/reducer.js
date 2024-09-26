@@ -1,24 +1,47 @@
-import { GetRequest } from "../../../plugins/https";
-import { setContact } from "./action";
-import { SET_CONTACT } from "./actionType";
+import { GetRequest, PostRequest } from "../../../plugins/https";
+import { setMenuId, setOrder } from "./action";
+import { MENU_ID, SET_ORDER } from "./actionType";
 
-export const getContact = async(dispatch) => {
+export const getOrder = async(dispatch) => {
     try {
-        const res = await GetRequest("/contact");
-        dispatch(setContact(res.data));
+        const res = await GetRequest("/order");
+        dispatch(getOrder(res.data));
     } catch (error) {
-        console.error("Error getting contact:", error);
+        console.error("Error getting Orders:", error);
     }
 };
+export const getMenuId = async(dispatch, id) => {
+    try {
+        dispatch(setMenuId(id));
+    } catch (error) {
+        console.error("Error adding favorite");
+    }
+};
+export const createOrder = async(dispatch) => {
+    try {
+        const res = await PostRequest("/order");
+        dispatch(setOrder(res.data));
+    } catch (error) {
+        console.error("Error creating Order:", error);
+    }
+}
 
-const initialState = { contact: [] };
+const initialState = {
+    order: [],
+    menuId: [],
+};
 
-export const contactReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_CONTACT:
+        case SET_ORDER:
             return {
                 ...state,
-                contact: action.payload,
+                order: action.payload,
+            };
+        case MENU_ID:
+            return {
+                ...state,
+                menuId: [...state.menuId, action.payload],
             };
         default:
             return state;

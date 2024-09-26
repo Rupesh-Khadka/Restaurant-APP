@@ -1,13 +1,27 @@
 import React from "react";
-import  {jwtDecode} from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { createFavorite } from "../../../store/modules/fav/reducer";
+import { setMenuId } from "../../../store/modules/order/action";
 
 function FoodCard({ _id, image, title, description, person, price }) {
   const dispatch = useDispatch();
   const reduxToken = useSelector((state) => state.authReducer.token);
   const userId = reduxToken ? jwtDecode(reduxToken).id : null;
+
+  const orderItem = async () => {
+    if (reduxToken && userId) {
+      try {
+        dispatch(setMenuId(_id));
+        console.log("The Menu id to be order is",_id);
+      } catch (error) {
+        console.log("Error in adding to order ");
+      }
+    } else {
+      alert("Please Log in ");
+    }
+  };
 
   const addToFavorite = async () => {
     if (reduxToken && userId) {
@@ -53,7 +67,9 @@ function FoodCard({ _id, image, title, description, person, price }) {
             Rs. {price}
           </p>
           <div className='flex items-center'>
-            <button className='bg-red-600 onclick={} hover:bg-red-700 text-white font-bold py-1 px-3 md:py-2 md:px-4 rounded-full transition-transform transform hover:scale-105'>
+            <button
+              onClick={orderItem}
+              className='bg-red-600 onclick={} hover:bg-red-700 text-white font-bold py-1 px-3 md:py-2 md:px-4 rounded-full transition-transform transform hover:scale-105'>
               +
             </button>
             {reduxToken && (

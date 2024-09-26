@@ -6,12 +6,11 @@ const OrderPage = () => {
   const [address, setAddress] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [items, setItems] = useState([
-    { id: 1, title: "Fresh Chicken Veggies", quantity: 1, price: 499 },
-    { id: 2, title: "Chicken Grilled", quantity: 1, price: 359 },
-    { id: 3, title: "Paneer Noodles", quantity: 1, price: 149 },
+ 
   ]);
-
-//   const items = useSelector((state)=>state.menuReducer.state);
+  const order = useSelector((state)=>state.orderReducer.menuId);
+  const menu = useSelector((state) => state.menuAllReducer.all) || []; // contains the menu all Items
+  console.log("The Items to be ordered is:",order)
 // const dispatch = useDispatch();
 //   useEffect(()=>{
 //     getMenu(dispatch),
@@ -43,12 +42,12 @@ const OrderPage = () => {
         <div className='mb-6'>
           <h2 className='text-2xl font-semibold text-red-600 mb-4'>Items</h2>
           <ul className='space-y-4'>
-            {items.map((item) => (
+            {order.map((item) => (
               <li
-                key={item.id}
+                key={order.id}
                 className='flex justify-between items-center p-4 border border-gray-200 rounded-lg'>
                 <div className='flex-1'>
-                  <span className='font-medium text-gray-800'>{item.title}</span>
+                  <span className='font-medium text-gray-800'>{order.title}</span>
                 </div>
                 <div className='flex items-center space-x-2 mr-6  '>
                   <button

@@ -17,7 +17,7 @@ export const createFavorite = async(dispatch, foodItem) => {
         const res = await PostRequest("/favourite", {
             foodItem,
         }); // "foodItem" = "id"  in backend
-        dispatch(addFav(res.data.data));
+        dispatch(addFav(res.data));
     } catch (error) {
         console.error("Error adding favorite");
     }

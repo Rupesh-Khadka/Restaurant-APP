@@ -9,6 +9,7 @@ import { menuAllReducer } from "./modules/menu/all/reducer";
 import { signupReducer } from "./modules/auth/signup/reducer";
 import { editReducer } from "./modules/menu/edit/reducer";
 import { deleteReducer } from "./modules/menu/delete/reducer";
+import { orderReducer } from "./modules/order/reducer";
 
 export default combineReducers({
   authReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
   menuAllReducer,
   editReducer,
   deleteReducer,
+  orderReducer,
 });

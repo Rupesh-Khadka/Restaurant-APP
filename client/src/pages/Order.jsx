@@ -5,23 +5,27 @@ const OrderPage = () => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [contactNumber, setContactNumber] = useState("");
-  const [items, setItems] = useState([
- 
-  ]);
-  const order = useSelector((state)=>state.orderReducer.menuId);
-  const menu = useSelector((state) => state.menuAllReducer.all) || []; // contains the menu all Items
-  console.log("The Items to be ordered is:",order)
-// const dispatch = useDispatch();
-//   useEffect(()=>{
-//     getMenu(dispatch),
-//   },[dispatch])
+  const [items, setItems] = useState([]);
 
+ 
+  const menu = useSelector((state) => state.menuAllReducer.all) || []; // contains the menu all Items
+
+  const order = useSelector((state) => state.orderReducer.menuId);
+  console.log("The Items to be ordered is:", order);
+
+  //Filter the menuId from MenuItems
+  const orderItems = menu.filter((menu) =>order.includes(menu._id));
+
+  
+  
   const handleQuantityChange = (id, delta) => {
-    setItems(items.map(item =>
-      item.id === id
-        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-        : item
-    ));
+    setItems(
+      orderItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
   };
 
   const handleSubmit = (e) => {
@@ -42,24 +46,26 @@ const OrderPage = () => {
         <div className='mb-6'>
           <h2 className='text-2xl font-semibold text-red-600 mb-4'>Items</h2>
           <ul className='space-y-4'>
-            {order.map((item) => (
+            {orderItems.map((item) => (
               <li
-                key={order.id}
+                key={item._id}
                 className='flex justify-between items-center p-4 border border-gray-200 rounded-lg'>
                 <div className='flex-1'>
-                  <span className='font-medium text-gray-800'>{order.title}</span>
+                  <span className='font-medium text-gray-800'>
+                    {item.title}
+                  </span>
                 </div>
                 <div className='flex items-center space-x-2 mr-6  '>
                   <button
                     aria-label='Decrease quantity'
-                    onClick={() => handleQuantityChange(item.id, -1)}
+                    onClick={() => handleQuantityChange(item._id, -1)}
                     className='p-2 px-3 bg-red-200 mr-2 text-lg font-bold text-red-600 rounded-md hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-500'>
                     -
                   </button>
                   <span className='text-gray-600 mr-2 '>{item.quantity}</span>
                   <button
                     aria-label='Increase quantity'
-                    onClick={() => handleQuantityChange(item.id, 1)}
+                    onClick={() => handleQuantityChange(item._id, 1)}
                     className='p-2 px-3   bg-red-200 text-lg font-bold text-red-600 rounded-md hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-500'>
                     +
                   </button>

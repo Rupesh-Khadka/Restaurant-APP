@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+
 const OrderPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -7,21 +9,21 @@ const OrderPage = () => {
   const [contactNumber, setContactNumber] = useState("");
   const [items, setItems] = useState([]);
 
- 
-  const menu = useSelector((state) => state.menuAllReducer.all) || []; // contains the menu all Items
+  const menu = useSelector((state) => state.menuAllReducer.all) || []; // contains all menu items
+  const order = useSelector((state) => state.orderReducer.menuId) || [];
+  // Filter and map menu items based on the order array
+  const orderItems = menu
+    .filter((menuItem) => order.includes(menuItem._id))
+    .map((item) => ({ ...item, quantity: 1 }));
 
-  const order = useSelector((state) => state.orderReducer.menuId);
-  console.log("The Items to be ordered is:", order);
+  useEffect(() => {
+    setItems(orderItems);
+  }, [order, menu]);
 
-  //Filter the menuId from MenuItems
-  const orderItems = menu.filter((menu) =>order.includes(menu._id));
-
-  
-  
   const handleQuantityChange = (id, delta) => {
-    setItems(
-      orderItems.map((item) =>
-        item.id === id
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item._id === id
           ? { ...item, quantity: Math.max(1, item.quantity + delta) }
           : item
       )
@@ -30,7 +32,7 @@ const OrderPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here, including the contact number
+    // Implement the form submission logic here, including contact number
     alert(`Order submitted! Contact Number: ${contactNumber}`);
   };
 
@@ -46,7 +48,7 @@ const OrderPage = () => {
         <div className='mb-6'>
           <h2 className='text-2xl font-semibold text-red-600 mb-4'>Items</h2>
           <ul className='space-y-4'>
-            {orderItems.map((item) => (
+            {items.map((item) => (
               <li
                 key={item._id}
                 className='flex justify-between items-center p-4 border border-gray-200 rounded-lg'>
@@ -55,22 +57,22 @@ const OrderPage = () => {
                     {item.title}
                   </span>
                 </div>
-                <div className='flex items-center space-x-2 mr-6  '>
+                <div className='flex items-center space-x-2 mr-6'>
                   <button
                     aria-label='Decrease quantity'
                     onClick={() => handleQuantityChange(item._id, -1)}
                     className='p-2 px-3 bg-red-200 mr-2 text-lg font-bold text-red-600 rounded-md hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-500'>
                     -
                   </button>
-                  <span className='text-gray-600 mr-2 '>{item.quantity}</span>
+                  <span className='text-gray-600 mr-2'>{item.quantity}</span>
                   <button
                     aria-label='Increase quantity'
                     onClick={() => handleQuantityChange(item._id, 1)}
-                    className='p-2 px-3   bg-red-200 text-lg font-bold text-red-600 rounded-md hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-500'>
+                    className='p-2 px-3 bg-red-200 text-lg font-bold text-red-600 rounded-md hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-500'>
                     +
                   </button>
                 </div>
-                <span className='text-gray-600 ml-8 '>
+                <span className='text-gray-600 ml-8'>
                   Rs. {item.quantity * item.price}
                 </span>
               </li>

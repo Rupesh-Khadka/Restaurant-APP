@@ -24,7 +24,7 @@ const AdminLogin = () => {
     event.preventDefault();
     try {
       const res = await PostRequest("/auth/admin/login", admindDetails);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("admintoken", res.data.token);
       dispatch(setAdminToken(res.data.token));
       setError("");
       navigate('/admin/all');

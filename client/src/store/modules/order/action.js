@@ -1,4 +1,4 @@
-import { GET_ORDER, MENU_ID, SET_ORDER } from "./actionType";
+import { GET_ORDER, MENU_ID, SET_ORDER, SET_SELECTED_ORDER_ID } from "./actionType";
 
 export const setMenuId = (id) => {
     return {
@@ -14,9 +14,14 @@ export const setOrder = (order) => {
     };
 };
 
-export const getOrder = (orders) => {
+export const fetchOrder = (orders) => {
     return {
         type: GET_ORDER,
         payload: orders,
     };
 };
+
+export const setSelectedOrderId = (id) => ({
+    type: SET_SELECTED_ORDER_ID,
+    payload: id,
+});

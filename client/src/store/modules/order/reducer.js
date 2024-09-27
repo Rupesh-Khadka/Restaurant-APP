@@ -1,15 +1,16 @@
 import { GetRequest, PostRequest } from "../../../plugins/https";
-import { setMenuId, setOrder } from "./action";
-import { MENU_ID, SET_ORDER } from "./actionType";
+import { fetchOrder, setMenuId, setOrder } from "./action";
+import { GET_ORDER, MENU_ID, SET_ORDER, SET_SELECTED_ORDER_ID } from "./actionType";
 
-// export const getOrder = async(dispatch) => {
-//     try {
-//         const res = await GetRequest("/order");
-//         dispatch(getOrder(res.data));
-//     } catch (error) {
-//         console.error("Error getting Orders:", error);
-//     }
-// };
+export const getOrder = async(dispatch) => {
+    try {
+        const res = await GetRequest("/orders");
+        console.log("API Response:", res.data);
+        dispatch(fetchOrder(res.data));
+    } catch (error) {
+        console.error("Error getting Orders:", error);
+    }
+};
 
 export const getMenuId = async(dispatch, id) => {
     try {
@@ -21,17 +22,19 @@ export const getMenuId = async(dispatch, id) => {
 
 export const createOrder = async(dispatch, items, customer) => {
     const payload = {
-        items: items.map(item => ({ // Store the quantity and item in items an array
+        items: items.map((item) => ({
+            // Store the quantity and item in items an array
             item: item._id,
             quantity: item.quantity,
         })),
-        customer: { // Store the customer propeties in an array
+        customer: {
+            // Store the customer propeties in an array
             name: customer.name,
             email: customer.email,
             number: customer.number,
             address: customer.address,
         },
-    }
+    };
     try {
         const res = await PostRequest("/orders", payload);
         dispatch(setOrder(res.data));
@@ -43,19 +46,31 @@ export const createOrder = async(dispatch, items, customer) => {
 const initialState = {
     order: [],
     menuId: [],
+    selectedOrderId: null,
 };
 
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
+        case MENU_ID:
+            return {
+                ...state,
+                menuId: [...state.menuId, action.payload],
+            };
         case SET_ORDER:
             return {
                 ...state,
                 order: [...state.order, action.payload],
             };
-        case MENU_ID:
+
+        case GET_ORDER:
             return {
                 ...state,
-                menuId: [...state.menuId, action.payload],
+                order: action.payload || [],
+            };
+        case SET_SELECTED_ORDER_ID:
+            return {
+                ...state,
+                selectedOrderId: action.payload,
             };
         default:
             return state;

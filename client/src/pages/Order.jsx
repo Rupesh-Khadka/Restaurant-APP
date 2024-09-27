@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { PostRequest } from "../plugins/https";
 import { createOrder } from "../store/modules/order/reducer";
 
 const OrderPage = () => {
@@ -44,6 +43,10 @@ const OrderPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!items.length || items.every(item => item.quantity <= 0)) {
+      toast.error("Cannot place an order with zero items.");
+      return;  
+  }
     try {
       const orderItems = items.map((item) => ({
         _id: item._id,   

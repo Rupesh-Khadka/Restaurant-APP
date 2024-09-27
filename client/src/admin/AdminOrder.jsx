@@ -1,25 +1,20 @@
-// AdminOrder.jsx
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import NavAdmin from './NavAdmin';
-import { setStatus, setSelectedOrder } from '../store/modules/status/action';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import NavAdmin from "./NavAdmin";
+import { getOrder } from "../store/modules/order/reducer";
 
 const AdminOrder = () => {
   const dispatch = useDispatch();
-  const orders = useSelector(state => state.orders || [] );// Adjust if needed based on your state shape
-  const selectedOrderId = useSelector(state => state.selectedOrderId); // Adjust if needed
-  const selectedOrder = orders.find(order => order.id === selectedOrderId);
+  const orderDetails = useSelector((state) => state.orderReducer.order) || [];
 
-  const handleStatusChange = (newStatus) => {
-    if (selectedOrderId !== null) {
-      dispatch(setStatus(selectedOrderId, newStatus));
-    }
-  };
+  useEffect(() => {
+    getOrder(dispatch);
+  }, [dispatch]);
+
 
   return (
     <div className='min-h-screen'>
       <NavAdmin />
-
       <div className='p-6'>
         <h1 className='text-2xl font-bold mb-6 text-center text-red-800'>
           Order Management
@@ -34,34 +29,30 @@ const AdminOrder = () => {
               <table className='min-w-full bg-white border border-red-200'>
                 <thead>
                   <tr className='w-full bg-red-100 border-b'>
-                    <th className='py-2 px-4 text-left text-red-800'>Order ID</th>
-                    <th className='py-2 px-4 text-left text-red-800'>Customer</th>
+                    <th className='py-2 px-4 text-left text-red-800'>
+                      Order ID
+                    </th>
+                    <th className='py-2 px-4 text-left text-red-800'>
+                      Customer
+                    </th>
                     <th className='py-2 px-4 text-left text-red-800'>Total</th>
                     <th className='py-2 px-4 text-left text-red-800'>Status</th>
-                    <th className='py-2 px-4 text-left text-red-800'>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.length === 0 ? (
+                  {orderDetails.length === 0 ? (
                     <tr>
-                      <td colSpan='5' className='py-4 text-center text-red-600'>
+                      <td colSpan='4' className='py-4 text-center text-red-600'>
                         No orders available
                       </td>
                     </tr>
                   ) : (
-                    orders.map((order) => (
-                      <tr key={order.id} className='border-b hover:bg-red-50'>
-                        <td className='py-2 px-4'>{order.id}</td>
-                        <td className='py-2 px-4'>{order.customer}</td>
-                        <td className='py-2 px-4'>{order.total}</td>
+                    orderDetails.map((order) => (
+                      <tr key={order._id} className='border-b hover:bg-red-50'>
+                        <td className='py-2 px-4'>{order._id}</td>
+                        <td className='py-2 px-4'>{order.customer.name}</td>
+                        <td className='py-2 px-4'>{order.totalAmount}</td>
                         <td className='py-2 px-4'>{order.status}</td>
-                        <td className='py-2 px-4'>
-                          <button
-                            onClick={() => dispatch(setSelectedOrder(order.id))}
-                            className='text-red-500 hover:underline'>
-                            View Details
-                          </button>
-                        </td>
                       </tr>
                     ))
                   )}
@@ -75,39 +66,46 @@ const AdminOrder = () => {
             <h2 className='text-xl font-semibold mb-4 text-red-600'>
               Order Details
             </h2>
-            {selectedOrder ? (
-              <div>
-                <p>
-                  <strong className='text-red-600'>Order ID:</strong>{" "}
-                  {selectedOrder.id}
-                </p>
-                <p>
-                  <strong className='text-red-600'>Customer:</strong>{" "}
-                  {selectedOrder.customer}
-                </p>
-                <p>
-                  <strong className='text-red-600'>Total:</strong>{" "}
-                  {selectedOrder.total}
-                </p>
-                <p>
-                  <strong className='text-red-600'>Status:</strong>{" "}
-                  {selectedOrder.status}
-                </p>
-                <div className='justify-center flex items-center'>
-                  <button
-                    onClick={() => handleStatusChange("Ongoing")}
-                    className='mr-2 text-yellow-500'>
-                    Ongoing
-                  </button>
-                  <button
-                    onClick={() => handleStatusChange("Delivered")}
-                    className='ml-2 text-red-600'>
-                    Delivered
-                  </button>
+            {orderDetails.length > 0 ? (
+              orderDetails.map((order) => (
+                <div key={order._id} className='mb-4'>
+                  <h3 className='font-bold text-lg'>Order ID: {order._id}</h3>
+                  <p>
+                    <strong className='text-red-600'>Customer:</strong>{" "}
+                    {order.customer.name}
+                  </p>
+                  <p>
+                    <strong className='text-red-600'>Email:</strong>{" "}
+                    {order.customer.email}
+                  </p>
+                  <p>
+                    <strong className='text-red-600'>Number:</strong>{" "}
+                    {order.customer.number}
+                  </p>
+                  <p>
+                    <strong className='text-red-600'>Address:</strong>{" "}
+                    {order.customer.address}
+                  </p>
+                  <p>
+                    <strong className='text-red-600'>Total Amount:</strong>{" "}
+                    {order.totalAmount}
+                  </p>
+                  <p>
+                    <strong className='text-red-600'>Status:</strong>{" "}
+                    {order.status}
+                  </p>
+                  <h4 className='font-bold mt-2'>Items:</h4>
+                  <ul>
+                    {order.items.map((item) => (
+                      <li key={item._id}>
+                        {item.quantity} x {item.item.title} - {item.total}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
+              ))
             ) : (
-              <p className='text-red-600'>Select an order to view details.</p>
+              <p className='text-red-600'>No order details available.</p>
             )}
           </div>
         </div>

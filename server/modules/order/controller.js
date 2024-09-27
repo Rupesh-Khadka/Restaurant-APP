@@ -11,7 +11,7 @@ const getAll = async(req, res) => {
             })
             .populate({
                 path: "customer",
-                select: "userName email  ",
+                select: "name email number address  ",
             });
         res.send({
             status: 200,
@@ -77,8 +77,7 @@ const create = async(req, res) => {
             //Iniciate new order
             items: calculateTotal,
             totalAmount,
-            customer: req.user._id, //Use customer id
-            address,
+            customer,
             status,
             createdAt,
         });

@@ -27,14 +27,24 @@ const orderSchema = new Schema({
         default: 0,
     },
     customer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        number: {
+            type: Number,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
     },
-    address: {
-        type: String,
-        required: true,
-    },
+
     status: {
         type: String,
         enum: ["Pending", "Ongoing", "Delivered"],

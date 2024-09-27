@@ -14,6 +14,7 @@ import { setToken } from "./store/modules/auth/login/action";
 function App() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("frontendToken");
+  
   useEffect(() => {
     if (token) {
       localStorage.setItem("frontendToken", token);

@@ -1,7 +1,8 @@
 import { GetRequest, PostRequest, PutRequest } from "../../../plugins/https";
-import { fetchOrder, setMenuId, setOrder, updatedOrderStatus } from "./action";
+import { fetchOrder, setMenuId, setOrder, updatedOrderStatus, userOrder } from "./action";
 import {
     GET_ORDER,
+    GET_USERORDER,
     MENU_ID,
     SET_ORDER,
     UPDATE_ORDER_STATUS,
@@ -11,6 +12,15 @@ export const getOrder = async(dispatch) => {
     try {
         const res = await GetRequest("/orders");
         dispatch(fetchOrder(res.data));
+    } catch (error) {
+        console.error("Error getting Orders:", error);
+    }
+};
+
+export const getUserOrder = async(dispatch) => {
+    try {
+        const res = await GetRequest("/orders/user");
+        dispatch(userOrder(res.data));
     } catch (error) {
         console.error("Error getting Orders:", error);
     }
@@ -79,6 +89,12 @@ export const orderReducer = (state = initialState, action) => {
             };
 
         case GET_ORDER:
+            return {
+                ...state,
+                order: action.payload || [],
+            };
+
+        case GET_USERORDER:
             return {
                 ...state,
                 order: action.payload || [],

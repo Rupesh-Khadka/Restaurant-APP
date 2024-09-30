@@ -27,25 +27,23 @@ const AdminOrder = () => {
     if (selectedOrder) {
       const updatedOrder = { ...selectedOrder, status: newStatus };
       await updateOrderStatus(dispatch, updatedOrder);
+      // changes the status in ordetail 
+      setSelectedOrder(updatedOrder);
       // Reload the orders to get the latest data
       await getOrder(dispatch);
     }
   };
-
-  const formatOrderId = (index) => {
-    return `MR${String(index + 1).padStart(2, "0")}`;
-  };
-
+ 
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
         return "text-yellow-500";
-      case "In Progress":
+      case "Ongoing":
         return "text-blue-500";
       case "Completed":
         return "text-green-500";
       default:
-        return "text-gray-500";
+        return "text-red-600";
     }
   };
 
@@ -89,7 +87,7 @@ const AdminOrder = () => {
                     orderDetails.map((order, index) => (
                       <tr key={order._id} className='border-b hover:bg-red-50'>
                         <td className='py-2 px-4 font-semibold'>
-                          {formatOrderId(index)}
+                          {order.orderNumber}
                         </td>
                         <td className='py-2 px-4 font-semibold'>
                           {order.customer.name}
@@ -194,7 +192,7 @@ const AdminOrder = () => {
                 </div>
 
                 <div className='flex space-x-2 mt-4'>
-                  {["Pending", "In Progress", "Completed"].map((status) => (
+                  {["Pending", "Ongoing", "Completed" , "Delivered"].map((status) => (
                     <button
                       key={status}
                       className='bg-red-600 text-white py-1 px-3 rounded hover:bg-red-500'

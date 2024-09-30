@@ -1,4 +1,3 @@
-import { MdFastfood } from "react-icons/md"; 
 import { AiOutlineHeart } from "react-icons/ai";
 import { MdDeliveryDining } from "react-icons/md";
 import {
@@ -37,6 +36,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { setToken } from "../../../store/modules/auth/login/action";
 import { useDispatch, useSelector } from "react-redux";
+import { FaClipboardCheck } from "react-icons/fa";
 
 const mockdata = [
   {
@@ -151,8 +151,8 @@ export function HeaderMegaMenu() {
             </Link>
             <Link
               to={"/order"}
-              className='text-3xl font-sans font-extrabold text-gray-700 transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2'>
-              <MdFastfood />
+              className='text-2xl font-sans font-extrabold text-gray-700 transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2'>
+              <FaClipboardCheck />
             </Link>
             {reduxToken ? (
               <div className='transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2'>

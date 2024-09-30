@@ -94,9 +94,14 @@ const create = async(req, res) => {
             (sum, item) => sum + item.total,
             0
         ); // taking item and sum to add and item.total to access total else 0
+
+        const orderCount = await Schema.countDocuments(); // Count existing orders
+        const orderNumber = `MR${String(orderCount + 1).padStart(2, '0')}`; // Generate a unique order number
+
         const newOrder = new Schema({
             //Iniciate new order
             user: req.user._id,
+            orderNumber,
             items: calculateTotal,
             totalAmount,
             customer,

@@ -7,6 +7,12 @@ const orderSchema = new Schema({
         ref: "User",
         required: true,
     },
+    orderNumber: {
+        // New field for a simpler order ID
+        type: String,
+        unique: true,
+        required: true,
+    },
     items: [{
         item: {
             type: mongoose.Schema.Types.ObjectId, // Reference to the Menu model
@@ -52,7 +58,7 @@ const orderSchema = new Schema({
 
     status: {
         type: String,
-        enum: ["Pending", "Ongoing", "Delivered"],
+        enum: ["Pending", "Ongoing", "Completed", "Delivered"],
         default: "Pending",
     },
 

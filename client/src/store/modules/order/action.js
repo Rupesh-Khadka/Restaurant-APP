@@ -1,5 +1,6 @@
 import {
     GET_ORDER,
+    GET_USERORDER,
     MENU_ID,
     SET_ORDER,
     UPDATE_ORDER_STATUS,
@@ -23,6 +24,13 @@ export const fetchOrder = (orders) => {
     return {
         type: GET_ORDER,
         payload: orders,
+    };
+};
+
+export const userOrder = (userorder) => {
+    return {
+        type: GET_USERORDER,
+        payload: userorder,
     };
 };
 

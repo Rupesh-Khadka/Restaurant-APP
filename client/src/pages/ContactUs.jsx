@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setContact } from "../store/modules/contact/action";
 import { PostRequest } from "../plugins/https";
+import { toast } from "react-toastify";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +21,9 @@ const ContactUs = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await PostRequest('/contact', formData);
+      const res = await PostRequest("/contact", formData);
       dispatch(setContact(res.data));
+      toast.success("Message Send");
       setFormData({
         name: "",
         number: "",
@@ -30,7 +32,7 @@ const ContactUs = () => {
       });
     } catch (error) {
       console.error("Error sending message:", error);
-      alert("Failed to send message");
+      toast.error("Failed to send message");
     }
   };
 

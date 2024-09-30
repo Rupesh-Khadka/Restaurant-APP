@@ -20,7 +20,7 @@ function FoodCard({ _id, image, title, description, person, price }) {
         console.log("Error in adding to order ");
       }
     } else {
-      alert("Please Log in ");
+      toast.error("Please Log in to order.")
     }
   };
 

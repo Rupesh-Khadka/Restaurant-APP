@@ -18,6 +18,28 @@ const getAll = async(req, res) => {
             data: data,
         });
     } catch (error) {
+        console.error("Error retrieving all orders:", error);
+        res.status(500).json({ message: "Error in retrieving data" });
+    }
+};
+
+const getAllUser = async(req, res) => {
+    try {
+        const data = await Schema.find({ user: req.user._id })
+            .populate({
+                path: "items.item",
+                select: "title price",
+            })
+            .populate({
+                path: "customer",
+                select: "name email number address  ",
+            });
+        res.send({
+            status: 200,
+            message: "Order retrieved successfully",
+            data: data,
+        });
+    } catch (error) {
         res.status(500).json({ message: "Error in retrieving data" });
     }
 };
@@ -50,7 +72,7 @@ const getById = async(req, res) => {
 
 const create = async(req, res) => {
     try {
-        const { items, customer, address, status, createdAt } = req.body; // req data from items
+        const { items, customer, status, createdAt } = req.body; // req data from items
 
         const calculateTotal = await Promise.all(
             items.map(async(item) => {
@@ -74,6 +96,7 @@ const create = async(req, res) => {
         ); // taking item and sum to add and item.total to access total else 0
         const newOrder = new Schema({
             //Iniciate new order
+            user: req.user._id,
             items: calculateTotal,
             totalAmount,
             customer,
@@ -105,9 +128,11 @@ const remove = async(req, res) => {
 const edit = async(req, res) => {
     try {
         const { status } = req.body;
-        const data = await Schema.findByIdAndUpdate(req.params.id, { status }, {
-            new: true,
-        });
+        const data = await Schema.findByIdAndUpdate(
+            req.params.id, { status }, {
+                new: true,
+            }
+        );
         res.send({
             status: 200,
             message: "Order Status  updated sucessfully",
@@ -120,6 +145,7 @@ const edit = async(req, res) => {
 
 module.exports = {
     getAll,
+    getAllUser,
     getById,
     create,
     remove,

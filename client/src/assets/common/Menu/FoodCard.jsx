@@ -4,6 +4,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { createFavorite } from "../../../store/modules/fav/reducer";
 import { setMenuId } from "../../../store/modules/order/action";
+import { toast } from "react-toastify";
 
 function FoodCard({ _id, image, title, description, person, price }) {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ function FoodCard({ _id, image, title, description, person, price }) {
     if (reduxToken && userId) {
       try {
         dispatch(setMenuId(_id));
-        console.log("The Menu id to be order is",_id);
+        toast.success("Item added to cart");
       } catch (error) {
         console.log("Error in adding to order ");
       }
@@ -26,9 +27,8 @@ function FoodCard({ _id, image, title, description, person, price }) {
   const addToFavorite = async () => {
     if (reduxToken && userId) {
       try {
-        console.log("User id :", userId);
-        console.log("Item to be added in favourite id :", _id);
         await createFavorite(dispatch, _id);
+        toast.success("Item added to Favourite");
       } catch (error) {
         console.log("Error in adding to fav items");
       }

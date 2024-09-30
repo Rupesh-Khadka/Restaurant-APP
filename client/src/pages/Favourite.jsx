@@ -4,14 +4,21 @@ import { AiFillHeart } from "react-icons/ai";
 import { getFavorites } from "../store/modules/fav/reducer";
 import { toast } from "react-toastify";
 import { DeleteRequest } from "../plugins/https";
+import { clearFav } from "../store/modules/fav/action";
 
 const Favourite = () => {
   const dispatch = useDispatch();
+  // const reduxToken =
   const favItems = useSelector((state) => state.favReducer.items) || [];
+  const reduxToken = useSelector((state) => state.authReducer.token);
 
   useEffect(() => {
-    getFavorites(dispatch);
-  }, [dispatch]);
+    if (reduxToken) {
+      getFavorites(dispatch);
+    } else {
+      dispatch(clearFav());
+    }
+  }, [dispatch, reduxToken]);
 
   const handleDelete = async (id) => {
     console.log("Deleted fav with id:", id);

@@ -57,6 +57,7 @@ const OrderPage = () => {
       await createOrder(dispatch, orderItems, customerDetails);
   
       toast.success("Order created successfully!");
+      //Reset the customer details
       setCustomerDetails({ name: "", email: "", address: "", number: "" });
       setItems([]);
     } catch (error) {

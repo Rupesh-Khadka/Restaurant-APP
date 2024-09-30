@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Favourite from "../pages/Favourite";
 import Order from "../pages/Order";
+import Delivery from "../pages/Delivery";
 
 export const frontendRoutes = [
   {
@@ -37,6 +38,11 @@ export const frontendRoutes = [
     lable: "order",
     path: "/order",
     element: <Order />,
+  },
+  {
+    lable: "delivery",
+    path: "/delivery",
+    element: <Delivery />,
   },
   {
     lable: "signup",

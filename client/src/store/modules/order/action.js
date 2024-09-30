@@ -1,4 +1,9 @@
-import { GET_ORDER, MENU_ID, SET_ORDER, SET_SELECTED_ORDER_ID } from "./actionType";
+import {
+    GET_ORDER,
+    MENU_ID,
+    SET_ORDER,
+    UPDATE_ORDER_STATUS,
+} from "./actionType";
 
 export const setMenuId = (id) => {
     return {
@@ -21,7 +26,7 @@ export const fetchOrder = (orders) => {
     };
 };
 
-export const setSelectedOrderId = (id) => ({
-    type: SET_SELECTED_ORDER_ID,
-    payload: id,
+export const updatedOrderStatus = (updatedOrder) => ({
+    type: UPDATE_ORDER_STATUS,
+    payload: updatedOrder,
 });

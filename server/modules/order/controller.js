@@ -1,6 +1,5 @@
 const Schema = require("./schema");
 const Menu = require("../menu/schema");
-const { userInfo } = require("os");
 
 const getAll = async(req, res) => {
     try {
@@ -105,12 +104,13 @@ const remove = async(req, res) => {
 
 const edit = async(req, res) => {
     try {
-        const data = await Schema.findByIdAndUpdate(req.params.id, req.body, {
+        const { status } = req.body;
+        const data = await Schema.findByIdAndUpdate(req.params.id, { status }, {
             new: true,
         });
         res.send({
             status: 200,
-            message: "Items updated sucessfully",
+            message: "Order Status  updated sucessfully",
             data: data,
         });
     } catch (error) {

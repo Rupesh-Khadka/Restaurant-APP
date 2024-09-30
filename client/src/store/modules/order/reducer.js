@@ -1,14 +1,30 @@
-import { GetRequest, PostRequest } from "../../../plugins/https";
-import { fetchOrder, setMenuId, setOrder } from "./action";
-import { GET_ORDER, MENU_ID, SET_ORDER, SET_SELECTED_ORDER_ID } from "./actionType";
+import { GetRequest, PostRequest, PutRequest } from "../../../plugins/https";
+import { fetchOrder, setMenuId, setOrder, updatedOrderStatus } from "./action";
+import {
+    GET_ORDER,
+    MENU_ID,
+    SET_ORDER,
+    UPDATE_ORDER_STATUS,
+} from "./actionType";
 
 export const getOrder = async(dispatch) => {
     try {
         const res = await GetRequest("/orders");
-        console.log("API Response:", res.data);
         dispatch(fetchOrder(res.data));
     } catch (error) {
         console.error("Error getting Orders:", error);
+    }
+};
+
+export const updateOrderStatus = async(dispatch, updatedOrder) => {
+    const id = updatedOrder._id;
+    try {
+        const res = await PutRequest(`/orders/${id}`, {
+            status: updatedOrder.status,
+        });
+        dispatch(updatedOrderStatus(res.data));
+    } catch (error) {
+        console.error("Error updating order status:", error);
     }
 };
 
@@ -67,11 +83,15 @@ export const orderReducer = (state = initialState, action) => {
                 ...state,
                 order: action.payload || [],
             };
-        case SET_SELECTED_ORDER_ID:
+
+        case UPDATE_ORDER_STATUS:
             return {
                 ...state,
-                selectedOrderId: action.payload,
+                order: state.order.map((ord) =>
+                    ord._id === action.payload._id ? action.payload : ord
+                ),
             };
+
         default:
             return state;
     }

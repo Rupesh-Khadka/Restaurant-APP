@@ -1,4 +1,4 @@
-import { SET_FAV, ADD_FAV, DELETE_FAV } from "./actionType";
+import { SET_FAV, ADD_FAV, DELETE_FAV, CLEAR_FAV } from "./actionType";
 
 export const setFav = (items) => ({
     type: SET_FAV,
@@ -13,4 +13,8 @@ export const addFav = (item) => ({
 export const deleteFav = (id) => ({
     type: DELETE_FAV,
     payload: id,
+});
+
+export const clearFav = () => ({
+    type: CLEAR_FAV,
 });

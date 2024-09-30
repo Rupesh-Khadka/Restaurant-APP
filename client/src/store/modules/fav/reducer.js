@@ -1,7 +1,7 @@
 // src/redux/favoriteReducer.js
 import { addFav, deleteFav, setFav } from "./action";
 import { DeleteRequest, GetRequest, PostRequest } from "../../../plugins/https";
-import { ADD_FAV, DELETE_FAV, SET_FAV } from "./actionType";
+import { ADD_FAV, CLEAR_FAV, DELETE_FAV, SET_FAV } from "./actionType";
 
 export const getFavorites = async(dispatch) => {
     try {
@@ -52,6 +52,11 @@ export const favReducer = (state = initialState, action) => {
             return {
                 ...state,
                 items: action.payload,
+            };
+        case CLEAR_FAV:
+            return {
+                ...state,
+                items: [],
             };
         default:
             return state;

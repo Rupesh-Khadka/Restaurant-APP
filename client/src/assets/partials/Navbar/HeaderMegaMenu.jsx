@@ -1,3 +1,4 @@
+import { MdFastfood } from "react-icons/md"; 
 import { AiOutlineHeart } from "react-icons/ai";
 import { MdDeliveryDining } from "react-icons/md";
 import {
@@ -144,13 +145,18 @@ export function HeaderMegaMenu() {
 
           <Group visibleFrom='sm'>
             <Link
-              to={"/order"}
-              className='text-4xl font-sans font-extrabold text-gray-700 transform transition-transform duration-300 hover:scale-150 cursor-pointer mx-2'>
+              to={"/delivery"}
+              className='text-4xl font-sans font-extrabold text-gray-700 transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2'>
               <MdDeliveryDining />
+            </Link>
+            <Link
+              to={"/order"}
+              className='text-3xl font-sans font-extrabold text-gray-700 transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2'>
+              <MdFastfood />
             </Link>
             {reduxToken ? (
               <div className='transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2'>
-                <button>
+                <button className='pt-2'>
                   <Avatar variant='white' radius='lg' size='lg' src='' />
                 </button>
               </div>

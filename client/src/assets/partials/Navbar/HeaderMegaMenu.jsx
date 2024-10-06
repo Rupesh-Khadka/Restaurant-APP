@@ -20,7 +20,6 @@ import {
   useMantineTheme,
   Avatar,
 } from "@mantine/core";
-import { SomeIcon } from "@tabler/icons-react";
 
 import { useDisclosure } from "@mantine/hooks";
 import {

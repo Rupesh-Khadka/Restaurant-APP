@@ -3,7 +3,11 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["https://deploy-mern-1whq.vercel.app"],
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 
 //Router
 const authRouter = require("./modules/auth/router");

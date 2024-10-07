@@ -1,16 +1,11 @@
 import { AiOutlineHeart } from "react-icons/ai";
 import { MdDeliveryDining } from "react-icons/md";
 import {
-  HoverCard,
   Group,
-  Button,
   UnstyledButton,
   Text,
-  SimpleGrid,
   ThemeIcon,
-  Anchor,
   Divider,
-  Center,
   Box,
   Burger,
   Drawer,
@@ -108,10 +103,10 @@ export function HeaderMegaMenu() {
   };
 
   return (
-    <Box className="pt-2 pb-1 border-b-2 border-gray-200">
+    <Box className="pt-4 pb-2   border-b-2 border-gray-200 mx-auto">
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <h2 className="font-sans font-bold text-xl text-red-500 transform transition-transform duration-300 hover:scale-125 cursor-pointer">
+          <h2 className="font-sans font-bold text-2xl text-red-500 transform transition-transform duration-300 hover:scale-125 cursor-pointer">
             <Link to={"/"}>MernRestro</Link>
           </h2>
 
@@ -163,7 +158,7 @@ export function HeaderMegaMenu() {
             </Link>
             {reduxToken ? (
               <div className="transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2">
-                <button className="pt-2">
+                <button className=" ">
                   <Avatar variant="white" radius="lg" size="lg" src="" />
                 </button>
               </div>
@@ -174,10 +169,8 @@ export function HeaderMegaMenu() {
             )}
 
             {reduxToken ? (
-              <button
-                className="py-1 px-4 rounded-xl border-gray-200 border-2 bg-white text-black font-bold transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2"
-                onClick={handleLogout}
-              >
+              <button className="py-1 px-4 rounded-xl border-gray-200 border-2 bg-white text-black font-bold transform transition-transform duration-300 hover:scale-110 cursor-pointer mx-2"
+                onClick={handleLogout}>
                 Logout
               </button>
             ) : (

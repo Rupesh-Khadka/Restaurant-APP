@@ -2,9 +2,9 @@ import React from "react";
 import { jwtDecode } from "jwt-decode";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { createFavorite } from "../../../store/modules/fav/reducer";
-import { setMenuId } from "../../../store/modules/order/action";
 import { toast } from "react-toastify";
+import { createFavorite } from "../../store/modules/fav/reducer";
+import { setMenuId } from "../../store/modules/order/action";
 
 function FoodCard({ _id, image, title, description, person, price }) {
   const dispatch = useDispatch();

@@ -1,6 +1,7 @@
 import React from 'react'
-import MenuFirst from '../assets/common/Menu/MenuFirst';
- 
+import MenuFirst from '../components/Menu/MenuFirst' 
+
+
 const Menu = () => {
   return (
     <div>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import Navbar from "./assets/partials/Navbar";
-import Footer from "./assets/partials/Footer";
+import Navbar from "./components/partials/Navbar";
+import Footer from "./components/partials/Footer";
 
 import { Navigate, Route, Routes } from "react-router-dom";
 import { frontendRoutes } from "./route/routes";
@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { setToken } from "./store/modules/auth/login/action";
 import { adminRoutes } from "./route/routesAdmin";
 import { setAdminToken } from "./store/modules/auth/adminLogin/action";
+
+
 function App() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("frontendToken");
@@ -47,8 +49,8 @@ function App() {
             key={key}
           />
         ))}
-        {adminRoutes.map((v, index) => (
-          <Route path={v.path} element={v.element} key={index} />
+        {adminRoutes.map((admin, index) => (
+          <Route path={admin.path} element={admin.element} key={index} />
         ))}
       </Routes>
     </>

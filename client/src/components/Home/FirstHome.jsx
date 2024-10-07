@@ -1,6 +1,6 @@
 import { SiCodechef } from "react-icons/si";
 import React from "react";
-import coffee from "../../Images/coffee.jpg";
+import coffee from "../../assets/Images/coffee.jpg";
 import { Link } from "react-router-dom";
 const FirstHome = () => {
   return (

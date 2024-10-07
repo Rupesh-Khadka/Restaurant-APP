@@ -1,15 +1,17 @@
 import React from "react";
-import NewCarousel from "../assets/partials/Carousel/NewCarousel";
-import SecoundHome from "../assets/common/Home/SecoundHome";
-import FirstHome from "../assets/common/Home/FirstHome";
+import SecoundHome from "../components/Home/SecoundHome";
+import FirstHome from "../components/Home/FirstHome";
+import NewCarousel from "../components/partials/Carousel/NewCarousel";
+import ThirdHome from "../components/Home/ThirdHome";
 
 const Home = () => {
   return (
-    <div>
+    <>
       <NewCarousel />
       <FirstHome />
       <SecoundHome />
-    </div>
+      <ThirdHome />
+    </>
   );
 };
 
